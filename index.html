@@ -36,7 +36,7 @@
     <!-- 計算モード選択（研究契約のみ） -->
     <div id="modeArea" style="margin-top:10px;">
       <label>
-        <input type="radio" name="mode" value="total" checked onchange="switchMode()"> 契約金額から計算
+        <input type="radio" name="mode" value="total" checked onchange="switchMode()"> 契約金額（総額）から計算
       </label><br>
       <label>
         <input type="radio" name="mode" value="direct" onchange="switchMode()"> 直接経費から計算
@@ -45,7 +45,7 @@
 
     <!-- 入力欄 -->
     <div id="inputArea" style="margin-top:10px;">
-      <label id="inputLabel">契約金額を入力してください（円）:</label><br>
+      <label id="inputLabel">契約金額（総額）を入力してください（円）:</label><br>
       <input type="number" id="amount" placeholder="例: 1000000">
     </div>
 
@@ -77,7 +77,7 @@
       const label = document.getElementById("inputLabel");
       const input = document.getElementById("amount");
       if (mode === "total") {
-        label.innerText = "契約金額を入力してください（円）:";
+        label.innerText = "契約金額（総額）を入力してください（円）:";
         input.placeholder = "例: 1000000 ※カンマなし";
       } else {
         label.innerText = "直接経費を入力してください（円）:";
@@ -122,4 +122,5 @@
   </script>
 </body>
 </html>
+
 
