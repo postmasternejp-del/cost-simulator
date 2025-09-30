@@ -1,63 +1,72 @@
-<div style="max-width:420px; padding:1em; border:1px solid #ccc; border-radius:8px; margin-top:1.5em;">
-  <h4>💡経費計算シミュレータ</h4>
-  
-  <label>
-    <input type="radio" name="mode" value="total" checked onchange="switchMode()"> 契約金額から計算
-  </label><br>
-  <label>
-    <input type="radio" name="mode" value="direct" onchange="switchMode()"> 直接経費から計算
-  </label>
-  
-  <div id="inputArea" style="margin-top:10px;">
-    <label id="inputLabel">契約金額を入力してください（円）:</label><br>
-    <input type="number" id="amount" placeholder="例: 1000000" style="width:100%; padding:5px; margin:5px 0;">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>経費計算シミュレータ</title>
+</head>
+<body>
+  <div style="max-width:420px; padding:1em; border:1px solid #ccc; border-radius:8px;">
+    <h4>💡経費計算シミュレータ</h4>
+
+    <label>
+      <input type="radio" name="mode" value="total" checked onchange="switchMode()"> 契約金額から計算
+    </label><br>
+    <label>
+      <input type="radio" name="mode" value="direct" onchange="switchMode()"> 直接経費から計算
+    </label>
+
+    <div id="inputArea" style="margin-top:10px;">
+      <label id="inputLabel">契約金額を入力してください（円）:</label><br>
+      <input type="number" id="amount" placeholder="例: 1000000" style="width:100%; padding:5px; margin:5px 0;">
+    </div>
+
+    <button onclick="calcCosts()" style="margin-top:8px; padding:6px 12px;">計算する</button>
+    <div id="result" style="margin-top:1em; font-weight:bold;"></div>
   </div>
-  
-  <button onclick="calcCosts()" style="margin-top:8px; padding:6px 12px;">計算する</button>
-  <div id="result" style="margin-top:1em; font-weight:bold;"></div>
-</div>
 
-<script>
-let mode = "total"; // デフォルトは契約金額モード
+  <script>
+    let mode = "total";
 
-function switchMode() {
-  const radios = document.getElementsByName("mode");
-  for (const r of radios) {
-    if (r.checked) mode = r.value;
-  }
-  const label = document.getElementById("inputLabel");
-  const input = document.getElementById("amount");
-  if (mode === "total") {
-    label.innerText = "契約金額を入力してください（円）:";
-    input.placeholder = "例: 1000000";
-  } else {
-    label.innerText = "直接経費を入力してください（円）:";
-    input.placeholder = "例: 1000000";
-  }
-  document.getElementById("result").innerHTML = ""; // 前の結果はクリア
-}
+    function switchMode() {
+      const radios = document.getElementsByName("mode");
+      for (const r of radios) {
+        if (r.checked) mode = r.value;
+      }
+      const label = document.getElementById("inputLabel");
+      const input = document.getElementById("amount");
+      if (mode === "total") {
+        label.innerText = "契約金額を入力してください（円）:";
+        input.placeholder = "例: 1000000";
+      } else {
+        label.innerText = "直接経費を入力してください（円）:";
+        input.placeholder = "例: 1000000";
+      }
+      document.getElementById("result").innerHTML = "";
+    }
 
-function calcCosts() {
-  const amount = parseFloat(document.getElementById("amount").value);
-  if (isNaN(amount) || amount <= 0) {
-    document.getElementById("result").innerHTML = "正しい金額を入力してください。";
-    return;
-  }
-  
-  let total, direct, indirect;
-  if (mode === "total") {
-    total = amount;
-    indirect = total * 0.2;
-    direct = total - indirect;
-  } else {
-    direct = amount;
-    indirect = direct * 0.2;
-    total = direct + indirect;
-  }
-  
-  document.getElementById("result").innerHTML =
-    "総額: " + total.toLocaleString() + "円<br>" +
-    "直接経費: " + direct.toLocaleString() + "円<br>" +
-    "間接経費 (20%): " + indirect.toLocaleString() + "円";
-}
-</script>
+    function calcCosts() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("result").innerHTML = "正しい金額を入力してください。";
+        return;
+      }
+
+      let total, direct, indirect;
+      if (mode === "total") {
+        total = amount;
+        indirect = total * 0.2;
+        direct = total - indirect;
+      } else {
+        direct = amount;
+        indirect = direct * 0.2;
+        total = direct + indirect;
+      }
+
+      document.getElementById("result").innerHTML =
+        "総額: " + total.toLocaleString() + "円<br>" +
+        "直接経費: " + direct.toLocaleString() + "円<br>" +
+        "間接経費 (20%): " + indirect.toLocaleString() + "円";
+    }
+  </script>
+</body>
+</html>
