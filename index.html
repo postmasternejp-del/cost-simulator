@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>経費計算シミュレータ</title>
+  <style>
+    body { font-family: sans-serif; }
+    .sim-container {
+      max-width: 450px;
+      padding: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    input[type="number"] { width: 100%; padding: 5px; margin: 5px 0; }
+    button { padding: 6px 12px; margin-top: 8px; }
+    #result { margin-top: 1em; font-weight: bold; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="sim-container">
+    <h4>💡経費計算シミュレータ</h4>
+
+    <!-- 契約形態選択 -->
+    <div>
+      <label>
+        <input type="radio" name="contractType" value="research" checked onchange="updateModeVisibility()"> 受託研究・共同研究
+      </label><br>
+      <label>
+        <input type="radio" name="contractType" value="donation" onchange="updateModeVisibility()"> 寄附金（奨学寄附金）
+      </label>
+    </div>
+
+    <!-- 計算モード選択（研究契約のみ） -->
+    <div id="modeArea" style="margin-top:10px;">
+      <label>
+        <input type="radio" name="mode" value="total" checked onchange="switchMode()"> 契約金額から計算
+      </label><br>
+      <label>
+        <input type="radio" name="mode" value="direct" onchange="switchMode()"> 直接経費から計算
+      </label>
+    </div>
+
+    <!-- 入力欄 -->
+    <div id="inputArea" style="margin-top:10px;">
+      <label id="inputLabel">契約金額を入力してください（円）:</label><br>
+      <input type="number" id="amount" placeholder="例: 1000000">
+    </div>
+
+    <button onclick="calcCosts()">計算する</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let contractType = "research";  // 初期値
+    let mode = "total";             // 初期値
+
+    function updateModeVisibility() {
+      const radios = document.getElementsByName("contractType");
+      for (const r of radios) {
+        if (r.checked) contractType = r.value;
+      }
+      // 研究契約のみモード選択を表示
+      document.getElementById("modeArea").style.display = contractType === "research" ? "block" : "none";
+      switchMode();  // 入力ラベル更新
+      document.getElementById("result").innerHTML = "";
+    }
+
+    function switchMode() {
+      if(contractType !== "research") return; // 寄附金はモードなし
+      const radios = document.getElementsByName("mode");
+      for (const r of radios) {
+        if (r.checked) mode = r.value;
+      }
+      const label = document.getElementById("inputLabel");
+      const input = document.getElementById("amount");
+      if (mode === "total") {
+        label.innerText = "契約金額を入力してください（円）:";
+        input.placeholder = "例: 1000000 ※カンマなし";
+      } else {
+        label.innerText = "直接経費を入力してください（円）:";
+        input.placeholder = "例: 1000000 ※カンマなし";
+      }
+      document.getElementById("result").innerHTML = "";
+    }
+
+    function calcCosts() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("result").innerHTML = "正しい金額を入力してください。";
+        return;
+      }
+
+      let total, direct, indirect;
+
+      if (contractType === "research") {
+        if (mode === "total") {
+          total = Math.round(amount);
+          direct = Math.ceil(total / 1.2); // 総額モードは切り上げ
+          indirect = total - direct;
+        } else {
+          direct = Math.round(amount);
+          indirect = Math.round(direct * 0.2);
+          total = direct + indirect;
+        }
+      } else { // 寄附金
+        total = Math.round(amount);
+        indirect = Math.round(total * 0.2);
+        direct = total - indirect;
+      }
+
+      document.getElementById("result").innerHTML =
+        "総額: " + total.toLocaleString() + "円<br>" +
+        "直接経費: " + direct.toLocaleString() + "円<br>" +
+        "間接経費 (20%): " + indirect.toLocaleString() + "円";
+    }
+
+    // 初期表示
+    updateModeVisibility();
+  </script>
+</body>
+</html>
