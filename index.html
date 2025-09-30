@@ -17,7 +17,7 @@
 
     <div id="inputArea" style="margin-top:10px;">
       <label id="inputLabel">契約金額を入力してください（円）:</label><br>
-      <input type="number" id="amount" placeholder="例: 1000000 ※カンマなし" style="width:100%; padding:5px; margin:5px 0;">
+      <input type="number" id="amount" placeholder="例: 1000000" style="width:100%; padding:5px; margin:5px 0;">
     </div>
 
     <button onclick="calcCosts()" style="margin-top:8px; padding:6px 12px;">計算する</button>
@@ -36,10 +36,10 @@
       const input = document.getElementById("amount");
       if (mode === "total") {
         label.innerText = "契約金額を入力してください（円）:";
-        input.placeholder = "例: 1000000";
+        input.placeholder = "例: 1000000 ※カンマなし";
       } else {
         label.innerText = "直接経費を入力してください（円）:";
-        input.placeholder = "例: 1000000";
+        input.placeholder = "例: 1000000 ※カンマなし";
       }
       document.getElementById("result").innerHTML = "";
     }
@@ -70,4 +70,5 @@
   </script>
 </body>
 </html>
+
 
