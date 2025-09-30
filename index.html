@@ -66,11 +66,13 @@
       let total, direct, indirect;
 
       if (mode === "total") {
-        total = amount;
-        direct = Math.ceil(total / 1.2);   // 直接経費を切り上げ
-        indirect = total - direct;         // 間接経費は残り
+        total = Math.round(amount);          // 総額を整数で丸め
+        direct = Math.floor(total / 1.2);    // 一旦切り捨て
+        indirect = total - direct;           // 残りを間接経費に
+        // 端数調整: 総額との差がある場合は直接経費に1円加える
+        if (direct + indirect < total) direct += 1;
       } else {
-        direct = amount;
+        direct = Math.round(amount);
         indirect = Math.round(direct * 0.2);
         total = direct + indirect;
       }
@@ -82,4 +84,4 @@
     }
   </script>
 </body>
-</
+</html>
