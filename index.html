@@ -66,8 +66,8 @@
       let total, direct, indirect;
 
       if (mode === "total") {
-        total = Math.round(amount);            // 総額を整数に丸め
-        direct = Math.roundup(total / 1.2);      // 直接経費を切り上げ
+        total = Math.round(amount);            // 総額を整数
+        direct = Math.ceil(total / 1.2);       // 直接経費を切り上げ
         indirect = total - direct;             // 残りを間接経費に
       } else {
         direct = Math.round(amount);           
