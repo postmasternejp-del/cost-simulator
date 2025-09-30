@@ -3,9 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>経費計算シミュレータ</title>
+  <style>
+    body { font-family: sans-serif; }
+    .sim-container {
+      max-width: 420px;
+      padding: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin: auto;
+    }
+    input[type="number"] { width: 100%; padding: 5px; margin: 5px 0; }
+    button { padding: 6px 12px; margin-top: 8px; }
+    #result { margin-top: 1em; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <div style="max-width:420px; padding:1em; border:1px solid #ccc; border-radius:8px;">
+  <div class="sim-container">
     <h4>💡経費計算シミュレータ</h4>
 
     <label>
@@ -17,11 +30,11 @@
 
     <div id="inputArea" style="margin-top:10px;">
       <label id="inputLabel">契約金額を入力してください（円）:</label><br>
-      <input type="number" id="amount" placeholder="例: 1000000" style="width:100%; padding:5px; margin:5px 0;">
+      <input type="number" id="amount" placeholder="例: 1000000">
     </div>
 
-    <button onclick="calcCosts()" style="margin-top:8px; padding:6px 12px;">計算する</button>
-    <div id="result" style="margin-top:1em; font-weight:bold;"></div>
+    <button onclick="calcCosts()">計算する</button>
+    <div id="result"></div>
   </div>
 
   <script>
@@ -52,10 +65,11 @@
       }
 
       let total, direct, indirect;
+
       if (mode === "total") {
         total = amount;
-        indirect = total * 0.2;
-        direct = total - indirect;
+        direct = total / 1.2;       // 総額から直接経費を算出
+        indirect = total - direct;  // 間接経費
       } else {
         direct = amount;
         indirect = direct * 0.2;
@@ -63,12 +77,10 @@
       }
 
       document.getElementById("result").innerHTML =
-        "総額: " + total.toLocaleString() + "円<br>" +
-        "直接経費: " + direct.toLocaleString() + "円<br>" +
-        "間接経費 (20%): " + indirect.toLocaleString() + "円";
+        "総額: " + Math.round(total).toLocaleString() + "円<br>" +
+        "直接経費: " + Math.round(direct).toLocaleString() + "円<br>" +
+        "間接経費 (20%): " + Math.round(indirect).toLocaleString() + "円";
     }
   </script>
 </body>
 </html>
-
-
