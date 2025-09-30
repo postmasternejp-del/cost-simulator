@@ -10,7 +10,6 @@
       padding: 1em;
       border: 1px solid #ccc;
       border-radius: 8px;
-
     }
     input[type="number"] { width: 100%; padding: 5px; margin: 5px 0; }
     button { padding: 6px 12px; margin-top: 8px; }
@@ -68,20 +67,19 @@
 
       if (mode === "total") {
         total = amount;
-        direct = total / 1.2;       // 総額から直接経費を算出
-        indirect = total - direct;  // 間接経費
+        direct = Math.ceil(total / 1.2);   // 直接経費を切り上げ
+        indirect = total - direct;         // 間接経費は残り
       } else {
         direct = amount;
-        indirect = direct * 0.2;
+        indirect = Math.round(direct * 0.2);
         total = direct + indirect;
       }
 
       document.getElementById("result").innerHTML =
-        "総額: " + Math.round(total).toLocaleString() + "円<br>" +
-        "直接経費: " + Math.round(direct).toLocaleString() + "円<br>" +
-        "間接経費 (20%): " + Math.round(indirect).toLocaleString() + "円";
+        "総額: " + total.toLocaleString() + "円<br>" +
+        "直接経費: " + direct.toLocaleString() + "円<br>" +
+        "間接経費 (20%): " + indirect.toLocaleString() + "円";
     }
   </script>
 </body>
-</html>
-
+</
