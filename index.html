@@ -56,4 +56,8 @@ function calcCosts() {
   }
   
   document.getElementById("result").innerHTML =
-    "総額: " + total.toLocaleString()
+    "総額: " + total.toLocaleString() + "円<br>" +
+    "直接経費: " + direct.toLocaleString() + "円<br>" +
+    "間接経費 (20%): " + indirect.toLocaleString() + "円";
+}
+</script>
